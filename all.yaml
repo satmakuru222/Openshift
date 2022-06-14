@@ -1,0 +1,1066 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.77"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.77"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/build.name: rhssodocker-1
+      openshift.io/scc: privileged
+    creationTimestamp: "2022-06-14T22:02:52Z"
+    labels:
+      openshift.io/build.name: rhssodocker-1
+    name: rhssodocker-1-build
+    namespace: dockerrhsso-project
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: Build
+      name: rhssodocker-1
+      uid: 43a38cc7-bc8c-4a36-9c02-62947bd93ce2
+    resourceVersion: "2046239"
+    uid: 78040bf5-abdf-4392-9865-6776a1f1fb37
+  spec:
+    activeDeadlineSeconds: 604800
+    containers:
+    - args:
+      - openshift-docker-build
+      - --v=0
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"rhssodocker-1","namespace":"dockerrhsso-project","uid":"43a38cc7-bc8c-4a36-9c02-62947bd93ce2","resourceVersion":"2046024","generation":1,"creationTimestamp":"2022-06-14T22:02:52Z","labels":{"build":"rhssodocker","buildconfig":"rhssodocker","openshift.io/build-config.name":"rhssodocker","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"rhssodocker","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"rhssodocker","uid":"f3452fe8-4443-4e56-ae72-ce9d2b21f5a0","controller":true}],"managedFields":[{"manager":"Go-http-client","operation":"Update","apiVersion":"build.openshift.io/v1","time":"2022-06-14T22:02:52Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:openshift.io/build-config.name":{},"f:openshift.io/build.number":{}},"f:labels":{".":{},"f:build":{},"f:buildconfig":{},"f:openshift.io/build-config.name":{},"f:openshift.io/build.start-policy":{}},"f:ownerReferences":{".":{},"k:{\"uid\":\"f3452fe8-4443-4e56-ae72-ce9d2b21f5a0\"}":{}}},"f:spec":{"f:output":{"f:to":{}},"f:serviceAccount":{},"f:source":{"f:binary":{},"f:type":{}},"f:strategy":{"f:dockerStrategy":{},"f:type":{}}},"f:status":{"f:conditions":{".":{},"k:{\"type\":\"New\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:status":{},"f:type":{}}},"f:config":{},"f:phase":{}}}}]},"spec":{"serviceAccount":"builder","source":{"type":"Binary","binary":{}},"strategy":{"type":"Docker","dockerStrategy":{"pullSecret":{"name":"builder-dockercfg-dbwh6"}}},"output":{"to":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest"},"pushSecret":{"name":"builder-dockercfg-dbwh6"}},"resources":{},"postCommit":{},"nodeSelector":null},"status":{"phase":"New","outputDockerImageReference":"image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest","config":{"kind":"BuildConfig","namespace":"dockerrhsso-project","name":"rhssodocker"},"output":{},"conditions":[{"type":"New","status":"True","lastUpdateTime":"2022-06-14T22:02:52Z","lastTransitionTime":"2022-06-14T22:02:52Z"}]}}
+      - name: LANG
+        value: C.utf8
+      - name: PUSH_DOCKERCFG_PATH
+        value: /var/run/secrets/openshift.io/push
+      - name: PULL_DOCKERCFG_PATH
+        value: /var/run/secrets/openshift.io/pull
+      - name: BUILD_REGISTRIES_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.conf
+      - name: BUILD_REGISTRIES_DIR_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.d
+      - name: BUILD_SIGNATURE_POLICY_PATH
+        value: /var/run/configs/openshift.io/build-system/policy.json
+      - name: BUILD_STORAGE_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/storage.conf
+      - name: BUILD_STORAGE_DRIVER
+        value: overlay
+      - name: BUILD_BLOBCACHE_DIR
+        value: /var/cache/blobs
+      - name: HTTP_PROXY
+      - name: HTTPS_PROXY
+      - name: NO_PROXY
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      imagePullPolicy: IfNotPresent
+      name: docker-build
+      resources: {}
+      securityContext:
+        privileged: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /var/lib/kubelet/config.json
+        name: node-pullsecrets
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/lib/containers/cache
+        name: buildcachedir
+      - mountPath: /var/run/secrets/openshift.io/push
+        name: builder-dockercfg-dbwh6-push
+        readOnly: true
+      - mountPath: /var/run/secrets/openshift.io/pull
+        name: builder-dockercfg-dbwh6-pull
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/build-system
+        name: build-system-configs
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/certs
+        name: build-ca-bundles
+      - mountPath: /var/run/configs/openshift.io/pki
+        name: build-proxy-ca-bundles
+      - mountPath: /var/lib/containers/storage
+        name: container-storage-root
+      - mountPath: /var/cache/blobs
+        name: build-blob-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kmqxb
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: builder-dockercfg-dbwh6
+    initContainers:
+    - args:
+      - openshift-git-clone
+      - --v=0
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"rhssodocker-1","namespace":"dockerrhsso-project","uid":"43a38cc7-bc8c-4a36-9c02-62947bd93ce2","resourceVersion":"2046024","generation":1,"creationTimestamp":"2022-06-14T22:02:52Z","labels":{"build":"rhssodocker","buildconfig":"rhssodocker","openshift.io/build-config.name":"rhssodocker","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"rhssodocker","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"rhssodocker","uid":"f3452fe8-4443-4e56-ae72-ce9d2b21f5a0","controller":true}],"managedFields":[{"manager":"Go-http-client","operation":"Update","apiVersion":"build.openshift.io/v1","time":"2022-06-14T22:02:52Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:openshift.io/build-config.name":{},"f:openshift.io/build.number":{}},"f:labels":{".":{},"f:build":{},"f:buildconfig":{},"f:openshift.io/build-config.name":{},"f:openshift.io/build.start-policy":{}},"f:ownerReferences":{".":{},"k:{\"uid\":\"f3452fe8-4443-4e56-ae72-ce9d2b21f5a0\"}":{}}},"f:spec":{"f:output":{"f:to":{}},"f:serviceAccount":{},"f:source":{"f:binary":{},"f:type":{}},"f:strategy":{"f:dockerStrategy":{},"f:type":{}}},"f:status":{"f:conditions":{".":{},"k:{\"type\":\"New\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:status":{},"f:type":{}}},"f:config":{},"f:phase":{}}}}]},"spec":{"serviceAccount":"builder","source":{"type":"Binary","binary":{}},"strategy":{"type":"Docker","dockerStrategy":{"pullSecret":{"name":"builder-dockercfg-dbwh6"}}},"output":{"to":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest"},"pushSecret":{"name":"builder-dockercfg-dbwh6"}},"resources":{},"postCommit":{},"nodeSelector":null},"status":{"phase":"New","outputDockerImageReference":"image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest","config":{"kind":"BuildConfig","namespace":"dockerrhsso-project","name":"rhssodocker"},"output":{},"conditions":[{"type":"New","status":"True","lastUpdateTime":"2022-06-14T22:02:52Z","lastTransitionTime":"2022-06-14T22:02:52Z"}]}}
+      - name: LANG
+        value: C.utf8
+      - name: BUILD_REGISTRIES_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.conf
+      - name: BUILD_REGISTRIES_DIR_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.d
+      - name: BUILD_SIGNATURE_POLICY_PATH
+        value: /var/run/configs/openshift.io/build-system/policy.json
+      - name: BUILD_STORAGE_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/storage.conf
+      - name: BUILD_BLOBCACHE_DIR
+        value: /var/cache/blobs
+      - name: HTTP_PROXY
+      - name: HTTPS_PROXY
+      - name: NO_PROXY
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      imagePullPolicy: IfNotPresent
+      name: git-clone
+      resources: {}
+      stdin: true
+      stdinOnce: true
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/configs/openshift.io/build-system
+        name: build-system-configs
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/certs
+        name: build-ca-bundles
+      - mountPath: /var/run/configs/openshift.io/pki
+        name: build-proxy-ca-bundles
+      - mountPath: /var/cache/blobs
+        name: build-blob-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kmqxb
+        readOnly: true
+    - args:
+      - openshift-manage-dockerfile
+      - --v=0
+      env:
+      - name: BUILD
+        value: |
+          {"kind":"Build","apiVersion":"build.openshift.io/v1","metadata":{"name":"rhssodocker-1","namespace":"dockerrhsso-project","uid":"43a38cc7-bc8c-4a36-9c02-62947bd93ce2","resourceVersion":"2046024","generation":1,"creationTimestamp":"2022-06-14T22:02:52Z","labels":{"build":"rhssodocker","buildconfig":"rhssodocker","openshift.io/build-config.name":"rhssodocker","openshift.io/build.start-policy":"Serial"},"annotations":{"openshift.io/build-config.name":"rhssodocker","openshift.io/build.number":"1"},"ownerReferences":[{"apiVersion":"build.openshift.io/v1","kind":"BuildConfig","name":"rhssodocker","uid":"f3452fe8-4443-4e56-ae72-ce9d2b21f5a0","controller":true}],"managedFields":[{"manager":"Go-http-client","operation":"Update","apiVersion":"build.openshift.io/v1","time":"2022-06-14T22:02:52Z","fieldsType":"FieldsV1","fieldsV1":{"f:metadata":{"f:annotations":{".":{},"f:openshift.io/build-config.name":{},"f:openshift.io/build.number":{}},"f:labels":{".":{},"f:build":{},"f:buildconfig":{},"f:openshift.io/build-config.name":{},"f:openshift.io/build.start-policy":{}},"f:ownerReferences":{".":{},"k:{\"uid\":\"f3452fe8-4443-4e56-ae72-ce9d2b21f5a0\"}":{}}},"f:spec":{"f:output":{"f:to":{}},"f:serviceAccount":{},"f:source":{"f:binary":{},"f:type":{}},"f:strategy":{"f:dockerStrategy":{},"f:type":{}}},"f:status":{"f:conditions":{".":{},"k:{\"type\":\"New\"}":{".":{},"f:lastTransitionTime":{},"f:lastUpdateTime":{},"f:status":{},"f:type":{}}},"f:config":{},"f:phase":{}}}}]},"spec":{"serviceAccount":"builder","source":{"type":"Binary","binary":{}},"strategy":{"type":"Docker","dockerStrategy":{"pullSecret":{"name":"builder-dockercfg-dbwh6"}}},"output":{"to":{"kind":"DockerImage","name":"image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest"},"pushSecret":{"name":"builder-dockercfg-dbwh6"}},"resources":{},"postCommit":{},"nodeSelector":null},"status":{"phase":"New","outputDockerImageReference":"image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest","config":{"kind":"BuildConfig","namespace":"dockerrhsso-project","name":"rhssodocker"},"output":{},"conditions":[{"type":"New","status":"True","lastUpdateTime":"2022-06-14T22:02:52Z","lastTransitionTime":"2022-06-14T22:02:52Z"}]}}
+      - name: LANG
+        value: C.utf8
+      - name: BUILD_REGISTRIES_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.conf
+      - name: BUILD_REGISTRIES_DIR_PATH
+        value: /var/run/configs/openshift.io/build-system/registries.d
+      - name: BUILD_SIGNATURE_POLICY_PATH
+        value: /var/run/configs/openshift.io/build-system/policy.json
+      - name: BUILD_STORAGE_CONF_PATH
+        value: /var/run/configs/openshift.io/build-system/storage.conf
+      - name: BUILD_BLOBCACHE_DIR
+        value: /var/cache/blobs
+      - name: HTTP_PROXY
+      - name: HTTPS_PROXY
+      - name: NO_PROXY
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      imagePullPolicy: IfNotPresent
+      name: manage-dockerfile
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: FallbackToLogsOnError
+      volumeMounts:
+      - mountPath: /tmp/build
+        name: buildworkdir
+      - mountPath: /var/run/configs/openshift.io/build-system
+        name: build-system-configs
+        readOnly: true
+      - mountPath: /var/run/configs/openshift.io/certs
+        name: build-ca-bundles
+      - mountPath: /var/run/configs/openshift.io/pki
+        name: build-proxy-ca-bundles
+      - mountPath: /var/cache/blobs
+        name: build-blob-cache
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-kmqxb
+        readOnly: true
+    nodeName: crc-xhphl-master-0
+    nodeSelector:
+      kubernetes.io/os: linux
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Never
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: builder
+    serviceAccountName: builder
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - hostPath:
+        path: /var/lib/containers/cache
+        type: ""
+      name: buildcachedir
+    - emptyDir: {}
+      name: buildworkdir
+    - hostPath:
+        path: /var/lib/kubelet/config.json
+        type: File
+      name: node-pullsecrets
+    - name: builder-dockercfg-dbwh6-push
+      secret:
+        defaultMode: 384
+        secretName: builder-dockercfg-dbwh6
+    - name: builder-dockercfg-dbwh6-pull
+      secret:
+        defaultMode: 384
+        secretName: builder-dockercfg-dbwh6
+    - configMap:
+        defaultMode: 420
+        name: rhssodocker-1-sys-config
+      name: build-system-configs
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: service-ca.crt
+          path: certs.d/image-registry.openshift-image-registry.svc:5000/ca.crt
+        - key: default-route-openshift-image-registry.apps-crc.testing
+          path: certs.d/default-route-openshift-image-registry.apps-crc.testing/ca.crt
+        name: rhssodocker-1-ca
+      name: build-ca-bundles
+    - configMap:
+        defaultMode: 420
+        items:
+        - key: ca-bundle.crt
+          path: tls-ca-bundle.pem
+        name: rhssodocker-1-global-ca
+      name: build-proxy-ca-bundles
+    - emptyDir: {}
+      name: container-storage-root
+    - emptyDir: {}
+      name: build-blob-cache
+    - name: kube-api-access-kmqxb
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:02:57Z"
+      reason: PodCompleted
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:03:56Z"
+      reason: PodCompleted
+      status: "False"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:03:56Z"
+      reason: PodCompleted
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:02:52Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://c41fa199ddcb79849f6232add7048f050eaf078505c745e50b0354de223f4d27
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      lastState: {}
+      name: docker-build
+      ready: false
+      restartCount: 0
+      started: false
+      state:
+        terminated:
+          containerID: cri-o://c41fa199ddcb79849f6232add7048f050eaf078505c745e50b0354de223f4d27
+          exitCode: 0
+          finishedAt: "2022-06-14T22:03:55Z"
+          reason: Completed
+          startedAt: "2022-06-14T22:02:58Z"
+    hostIP: 192.168.126.11
+    initContainerStatuses:
+    - containerID: cri-o://b9d2c795d53f47ca2bed375a3f8195bdc3f9d9016f5f9a54dc2a044c1cf27b55
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      lastState: {}
+      name: git-clone
+      ready: true
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://b9d2c795d53f47ca2bed375a3f8195bdc3f9d9016f5f9a54dc2a044c1cf27b55
+          exitCode: 0
+          finishedAt: "2022-06-14T22:02:56Z"
+          reason: Completed
+          startedAt: "2022-06-14T22:02:55Z"
+    - containerID: cri-o://1408eb49729d4cf63b84462f9ec92392ab2489519802185a39dd7861d24fccc3
+      image: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      imageID: quay.io/openshift-release-dev/ocp-v4.0-art-dev@sha256:1696e7c02f47b9dd859c209bd4ac3f3660a7b558c88ab2df059014658fe2ef9f
+      lastState: {}
+      name: manage-dockerfile
+      ready: true
+      restartCount: 0
+      state:
+        terminated:
+          containerID: cri-o://1408eb49729d4cf63b84462f9ec92392ab2489519802185a39dd7861d24fccc3
+          exitCode: 0
+          finishedAt: "2022-06-14T22:02:57Z"
+          reason: Completed
+          startedAt: "2022-06-14T22:02:57Z"
+    phase: Succeeded
+    podIP: 10.217.0.77
+    podIPs:
+    - ip: 10.217.0.77
+    qosClass: BestEffort
+    startTime: "2022-06-14T22:02:52Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.95"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.95"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted
+    creationTimestamp: "2022-06-14T22:38:48Z"
+    generateName: rhssodocker-rs-
+    labels:
+      run: rhssodocker
+    name: rhssodocker-rs-6tg64
+    namespace: dockerrhsso-project
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: rhssodocker-rs
+      uid: 95021e62-534e-4567-a8e4-e5d6a9d8bb5c
+    resourceVersion: "2053257"
+    uid: 1f3a0842-36e1-4824-8536-bee23adb000d
+  spec:
+    containers:
+    - image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+      imagePullPolicy: Always
+      name: rhssodocker
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1000700000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-ggtcr
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-b45bf
+    nodeName: crc-xhphl-master-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000700000
+      seLinuxOptions:
+        level: s0:c26,c25
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-ggtcr
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:48Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:52Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:52Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:48Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://34bcc962dfeae8747c95a35c0036c4c47aaf163974c33e0ba8a5cdf610a1fd93
+      image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+      imageID: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker@sha256:366448593109fe40c6cc187e13df05aaf2706d0e9e331c6918a49009726c4227
+      lastState: {}
+      name: rhssodocker
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-06-14T22:38:51Z"
+    hostIP: 192.168.126.11
+    phase: Running
+    podIP: 10.217.0.95
+    podIPs:
+    - ip: 10.217.0.95
+    qosClass: BestEffort
+    startTime: "2022-06-14T22:38:48Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.92"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.92"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted
+    creationTimestamp: "2022-06-14T22:36:03Z"
+    generateName: rhssodocker-rs-
+    labels:
+      run: rhssodocker
+    name: rhssodocker-rs-fqgvz
+    namespace: dockerrhsso-project
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: rhssodocker-rs
+      uid: 95021e62-534e-4567-a8e4-e5d6a9d8bb5c
+    resourceVersion: "2052696"
+    uid: af9e2ba9-3444-4bae-8e3c-0a52213776b2
+  spec:
+    containers:
+    - image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+      imagePullPolicy: Always
+      name: rhssodocker
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1000700000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-cttrz
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-b45bf
+    nodeName: crc-xhphl-master-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000700000
+      seLinuxOptions:
+        level: s0:c26,c25
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-cttrz
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:36:03Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:36:06Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:36:06Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:36:03Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://5ac0a473fb956af01b10032da6baaec88701cdbafb532b9d8700406b154f61a4
+      image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+      imageID: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker@sha256:366448593109fe40c6cc187e13df05aaf2706d0e9e331c6918a49009726c4227
+      lastState: {}
+      name: rhssodocker
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-06-14T22:36:05Z"
+    hostIP: 192.168.126.11
+    phase: Running
+    podIP: 10.217.0.92
+    podIPs:
+    - ip: 10.217.0.92
+    qosClass: BestEffort
+    startTime: "2022-06-14T22:36:03Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    annotations:
+      k8s.v1.cni.cncf.io/network-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.94"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      k8s.v1.cni.cncf.io/networks-status: |-
+        [{
+            "name": "openshift-sdn",
+            "interface": "eth0",
+            "ips": [
+                "10.217.0.94"
+            ],
+            "default": true,
+            "dns": {}
+        }]
+      openshift.io/scc: restricted
+    creationTimestamp: "2022-06-14T22:38:24Z"
+    generateName: rhssodocker-rs-
+    labels:
+      run: rhssodocker
+    name: rhssodocker-rs-hm6k7
+    namespace: dockerrhsso-project
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: rhssodocker-rs
+      uid: 95021e62-534e-4567-a8e4-e5d6a9d8bb5c
+    resourceVersion: "2053161"
+    uid: 0c3f5bff-dd47-42e3-a4ad-e5fbf2edbb71
+  spec:
+    containers:
+    - image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+      imagePullPolicy: Always
+      name: rhssodocker
+      ports:
+      - containerPort: 8080
+        protocol: TCP
+      resources: {}
+      securityContext:
+        capabilities:
+          drop:
+          - KILL
+          - MKNOD
+          - SETGID
+          - SETUID
+        runAsUser: 1000700000
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-84j64
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    imagePullSecrets:
+    - name: default-dockercfg-b45bf
+    nodeName: crc-xhphl-master-0
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 1000700000
+      seLinuxOptions:
+        level: s0:c26,c25
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-84j64
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+        - configMap:
+            items:
+            - key: service-ca.crt
+              path: service-ca.crt
+            name: openshift-service-ca.crt
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:24Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:27Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:27Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2022-06-14T22:38:24Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: cri-o://29e83996a7a0a6f9354c628a910725611b8119eba82be441e67d79385320731b
+      image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+      imageID: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker@sha256:366448593109fe40c6cc187e13df05aaf2706d0e9e331c6918a49009726c4227
+      lastState: {}
+      name: rhssodocker
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2022-06-14T22:38:27Z"
+    hostIP: 192.168.126.11
+    phase: Running
+    podIP: 10.217.0.94
+    podIPs:
+    - ip: 10.217.0.94
+    qosClass: BestEffort
+    startTime: "2022-06-14T22:38:24Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2022-06-14T22:05:33Z"
+    name: rhssodocker
+    namespace: dockerrhsso-project
+    resourceVersion: "2046570"
+    uid: f989a282-2265-4f36-8ab7-d0acc8395fa1
+  spec:
+    clusterIP: 10.217.4.227
+    clusterIPs:
+    - 10.217.4.227
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 9376
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      run: rhssodocker
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    creationTimestamp: "2022-06-14T22:36:03Z"
+    generation: 2
+    name: rhssodocker-rs
+    namespace: dockerrhsso-project
+    resourceVersion: "2053260"
+    uid: 95021e62-534e-4567-a8e4-e5d6a9d8bb5c
+  spec:
+    replicas: 3
+    selector:
+      matchLabels:
+        run: rhssodocker
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          run: rhssodocker
+        name: rhssodocker
+      spec:
+        containers:
+        - image: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker:latest
+          imagePullPolicy: Always
+          name: rhssodocker
+          ports:
+          - containerPort: 8080
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 3
+    fullyLabeledReplicas: 3
+    observedGeneration: 2
+    readyReplicas: 3
+    replicas: 3
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    creationTimestamp: "2022-06-14T22:02:43Z"
+    generation: 2
+    labels:
+      build: rhssodocker
+    name: rhssodocker
+    namespace: dockerrhsso-project
+    resourceVersion: "2046023"
+    uid: f3452fe8-4443-4e56-ae72-ce9d2b21f5a0
+  spec:
+    failedBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: rhssodocker:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      binary: {}
+      type: Binary
+    strategy:
+      dockerStrategy: {}
+      type: Docker
+    successfulBuildsHistoryLimit: 5
+    triggers:
+    - github:
+        secret: DkiXeD0XffkYMjfAKv_K
+      type: GitHub
+    - generic:
+        secret: tbEysUq5UcqLenqIsIA3
+      type: Generic
+  status:
+    lastVersion: 1
+- apiVersion: build.openshift.io/v1
+  kind: Build
+  metadata:
+    annotations:
+      openshift.io/build-config.name: rhssodocker
+      openshift.io/build.number: "1"
+      openshift.io/build.pod-name: rhssodocker-1-build
+    creationTimestamp: "2022-06-14T22:02:52Z"
+    generation: 2
+    labels:
+      build: rhssodocker
+      buildconfig: rhssodocker
+      openshift.io/build-config.name: rhssodocker
+      openshift.io/build.start-policy: Serial
+    name: rhssodocker-1
+    namespace: dockerrhsso-project
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: BuildConfig
+      name: rhssodocker
+      uid: f3452fe8-4443-4e56-ae72-ce9d2b21f5a0
+    resourceVersion: "2046240"
+    uid: 43a38cc7-bc8c-4a36-9c02-62947bd93ce2
+  spec:
+    nodeSelector: null
+    output:
+      pushSecret:
+        name: builder-dockercfg-dbwh6
+      to:
+        kind: ImageStreamTag
+        name: rhssodocker:latest
+    postCommit: {}
+    resources: {}
+    serviceAccount: builder
+    source:
+      binary: {}
+      type: Binary
+    strategy:
+      dockerStrategy: {}
+      type: Docker
+  status:
+    completionTimestamp: "2022-06-14T22:03:58Z"
+    conditions:
+    - lastTransitionTime: "2022-06-14T22:02:52Z"
+      lastUpdateTime: "2022-06-14T22:02:52Z"
+      status: "False"
+      type: New
+    - lastTransitionTime: "2022-06-14T22:02:55Z"
+      lastUpdateTime: "2022-06-14T22:02:55Z"
+      status: "False"
+      type: Pending
+    - lastTransitionTime: "2022-06-14T22:03:58Z"
+      lastUpdateTime: "2022-06-14T22:03:58Z"
+      status: "False"
+      type: Running
+    - lastTransitionTime: "2022-06-14T22:03:58Z"
+      lastUpdateTime: "2022-06-14T22:03:58Z"
+      status: "True"
+      type: Complete
+    config:
+      kind: BuildConfig
+      name: rhssodocker
+      namespace: dockerrhsso-project
+    duration: 66000000000
+    output:
+      to:
+        imageDigest: sha256:366448593109fe40c6cc187e13df05aaf2706d0e9e331c6918a49009726c4227
+    outputDockerImageReference: image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker:latest
+    phase: Complete
+    stages:
+    - durationMilliseconds: 38940
+      name: PullImages
+      startTime: "2022-06-14T22:02:58Z"
+      steps:
+      - durationMilliseconds: 38940
+        name: PullBaseImage
+        startTime: "2022-06-14T22:02:58Z"
+    - durationMilliseconds: 17336
+      name: Build
+      startTime: "2022-06-14T22:03:37Z"
+      steps:
+      - durationMilliseconds: 17336
+        name: DockerBuild
+        startTime: "2022-06-14T22:03:37Z"
+    - durationMilliseconds: 520
+      name: PushImage
+      startTime: "2022-06-14T22:03:54Z"
+      steps:
+      - durationMilliseconds: 520
+        name: PushDockerImage
+        startTime: "2022-06-14T22:03:54Z"
+    startTimestamp: "2022-06-14T22:02:52Z"
+- apiVersion: image.openshift.io/v1
+  kind: ImageStream
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftNewBuild
+    creationTimestamp: "2022-06-14T22:02:43Z"
+    generation: 2
+    labels:
+      build: rhssodocker
+    name: rhssodocker
+    namespace: dockerrhsso-project
+    resourceVersion: "2046273"
+    uid: c74b8c49-7996-438c-8c6e-45138ce4da99
+  spec:
+    lookupPolicy:
+      local: true
+  status:
+    dockerImageRepository: image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker
+    publicDockerImageRepository: default-route-openshift-image-registry.apps-crc.testing/dockerrhsso-project/rhssodocker
+    tags:
+    - items:
+      - created: "2022-06-14T22:03:54Z"
+        dockerImageReference: image-registry.openshift-image-registry.svc:5000/dockerrhsso-project/rhssodocker@sha256:366448593109fe40c6cc187e13df05aaf2706d0e9e331c6918a49009726c4227
+        generation: 1
+        image: sha256:366448593109fe40c6cc187e13df05aaf2706d0e9e331c6918a49009726c4227
+      tag: latest
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: "2022-06-14T22:05:52Z"
+    name: http-rhsso-docker-route
+    namespace: dockerrhsso-project
+    resourceVersion: "2046637"
+    uid: 7e77621b-432c-46a8-9c0e-adcc8b00c382
+  spec:
+    host: http-rhsso-docker-route-dockerrhsso-project.apps-crc.testing
+    path: /auth/
+    port:
+      targetPort: 8080
+    to:
+      kind: Service
+      name: rhssodocker
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: "2022-06-14T22:05:52Z"
+        status: "True"
+        type: Admitted
+      host: http-rhsso-docker-route-dockerrhsso-project.apps-crc.testing
+      routerCanonicalHostname: router-default.apps-crc.testing
+      routerName: default
+      wildcardPolicy: None
+kind: List
+metadata:
+  resourceVersion: ""
+  selfLink: ""
